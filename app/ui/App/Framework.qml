@@ -59,6 +59,7 @@ ColumnLayout {
 
     AppStatusBar {
         Layout.fillWidth: true
+        currentFrame: bottomBar.currentFrame
         onSideBarToggleRequested: sideBar.visible = !sideBar.visible
     }
 }
