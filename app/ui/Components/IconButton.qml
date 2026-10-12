@@ -6,7 +6,7 @@ Button {
     id: control
 
     property int iconSize: 16
-    property string iconColor: "black"
+    property string iconColor: Theme.text
     property bool solid: true
 
     implicitWidth: 30
@@ -15,8 +15,8 @@ Button {
 
     background: Rectangle {
         anchors.fill: parent
-        color: control.down ? "#d0d0d0" : "#f0f0f0"
-        border.color: "#a0a0a0"
+        color: control.down ? Theme.controlPressed : Theme.surface
+        border.color: Theme.border
         radius: 4
     }
 

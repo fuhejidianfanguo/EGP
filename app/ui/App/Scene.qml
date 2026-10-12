@@ -4,5 +4,5 @@ import QtQuick.Controls
 
 Rectangle {
     id: root
-    color: '#a1a1a1'
+    color: Theme.background
 }

@@ -10,20 +10,20 @@ Item {
     // Horizontal 方向的分隔条竖直摆放，Vertical 方向的分隔条水平摆放。
     property int orientation: Qt.Horizontal
 
-    readonly property bool active: T.SplitHandle.hovered || T.SplitHandle.pressed
+    readonly property bool active: T.SplitHandle.pressed
 
     Rectangle {
         anchors.fill: parent
-        color: "#2a2a2a"
+        color: Theme.dark
     }
 
     Rectangle {
         id: bar
 
         anchors.centerIn: parent
-        color: "#888888"
-        width: root.orientation === Qt.Horizontal ? (root.active ? 10 : 4) : parent.width
-        height: root.orientation === Qt.Horizontal ? parent.height : (root.active ? 10 : 4)
+        color: Theme.tertiary
+        width: root.orientation === Qt.Horizontal ? (root.active ? 10 : parent.width) : parent.width
+        height: root.orientation === Qt.Horizontal ? parent.height : (root.active ? 10 : parent.height)
 
         Behavior on width {
             enabled: root.orientation === Qt.Horizontal

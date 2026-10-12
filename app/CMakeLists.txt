@@ -1,6 +1,7 @@
 find_package(Qt6 REQUIRED
 	COMPONENTS
 		Core
+		Gui
 		Widgets
 		Quick
 		Qml
@@ -28,7 +29,20 @@ file(GLOB_RECURSE EGP_APP_UI_RESOURCE_FILES
 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	resources/*
 )
-add_executable(EGP_app src/main.cpp)
+file(GLOB_RECURSE EGP_APP_UI_CPP_FILES
+	CONFIGURE_DEPENDS
+	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+	src/Components/*.cpp
+)
+file(GLOB_RECURSE EGP_APP_UI_HPP_FILES
+	CONFIGURE_DEPENDS
+	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+	src/Components/*.hpp
+)
+add_executable(
+	EGP_app
+	src/main.cpp
+)
 qt_add_qml_module(
 	EGP_app
 	URI
@@ -37,6 +51,9 @@ qt_add_qml_module(
 	1.0
 	QML_FILES
 	${EGP_APP_UI_QML_FILES}
+	SOURCES
+	${EGP_APP_UI_CPP_FILES}
+	${EGP_APP_UI_HPP_FILES}
 	RESOURCES
 	${EGP_APP_UI_JAVASCRIPT_FILES}
 )
@@ -49,11 +66,13 @@ qt_add_resources(
 	${EGP_APP_UI_RESOURCE_FILES}
 )
 target_include_directories(EGP_app
-	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/include
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/src/Components/headers
 )
 target_link_libraries(EGP_app
 	PRIVATE
 		Qt6::Core
+		Qt6::Gui
 		Qt6::Qml
 		Qt6::Quick
 		Qt6::QuickControls2

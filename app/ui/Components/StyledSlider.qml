@@ -27,7 +27,7 @@ Slider {
             width: parent.width
             height: 8
             radius: 4
-            color: "#ffffff"
+            color: Theme.track
             antialiasing: true
         }
 
@@ -36,7 +36,7 @@ Slider {
             height: track.height
             topLeftRadius: 4
             bottomLeftRadius: 4
-            color: "#2196F3"
+            color: Theme.primary
             antialiasing: true
         }
 
@@ -61,7 +61,7 @@ Slider {
                     y: 12
                     width: 2
                     height: 6
-                    color: "#333"
+                    color: Theme.text
                 }
 
                 Text {
@@ -70,7 +70,7 @@ Slider {
                     visible: tickItem.index % tickItem.labelStep === 0 || tickItem.index === control.tickCount - 1
                     text: tickItem.tickValue.toFixed(0)
                     font.pixelSize: 10
-                    color: "#333"
+                    color: Theme.text
                 }
             }
         }
@@ -82,8 +82,8 @@ Slider {
         implicitWidth: 6
         implicitHeight: 26
         radius: 13
-        color: control.pressed ? "#f0f0f0" : "#ffffff"
-        border.color: "#bdbdbd"
+        color: control.pressed ? Theme.surfacePressed : Theme.surface
+        border.color: Theme.sliderBorder
         border.width: 1
     }
 }

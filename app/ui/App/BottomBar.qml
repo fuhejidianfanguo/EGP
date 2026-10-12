@@ -7,7 +7,7 @@ Rectangle {
 
     readonly property int currentFrame: Math.round(slider.value)
     readonly property real currentValue: slider.value
-    color: '#797979'
+    color: Theme.secondary
 
     RowLayout {
         anchors.fill: parent
@@ -19,7 +19,7 @@ Rectangle {
         IconButton {
             property bool playing: false
             text: playing ? "\uf04c" : "\uf04b"
-            iconColor: playing ? "black" : "red"
+            iconColor: playing ? Theme.text : Theme.danger
             onClicked: {
                 playing = !playing;
             }
@@ -37,7 +37,6 @@ Rectangle {
             onPressedChanged: {
                 if (!pressed) {
                     value = Math.round(value);
-                    console.log("slider value changed:", value);
                 }
             }
         }

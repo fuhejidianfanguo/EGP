@@ -31,7 +31,7 @@ StatusBar {
 
     Text {
         Layout.rightMargin: 8
-        color: "#333333"
+        color: Theme.text
         text: qsTr("帧 ") + root.currentFrame
     }
 }

@@ -7,7 +7,7 @@ Rectangle {
 
     Layout.preferredHeight: 30
     Layout.fillWidth: true
-    color: "lightgray"
+    color: Theme.statusBar
 
     default property alias content: contentRow.data
 

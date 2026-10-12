@@ -4,5 +4,5 @@ import QtQuick.Layouts
 Rectangle {
     Layout.fillHeight: true
     Layout.preferredWidth: 150
-    color: "darkgray"
+    color: Theme.sidebar
 }
