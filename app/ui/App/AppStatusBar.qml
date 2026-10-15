@@ -32,6 +32,6 @@ StatusBar {
     Text {
         Layout.rightMargin: 8
         color: Theme.text
-        text: qsTr("帧 ") + root.currentFrame
+        text: qsTr("帧") + " " + root.currentFrame
     }
 }

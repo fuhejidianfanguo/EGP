@@ -1,8 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick3D
 
-Rectangle {
+View3D {
     id: root
-    color: Theme.background
+    environment: SceneEnvironment {
+        clearColor: Theme.background
+    }
 }

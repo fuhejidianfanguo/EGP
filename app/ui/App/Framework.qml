@@ -61,5 +61,7 @@ ColumnLayout {
         Layout.fillWidth: true
         currentFrame: bottomBar.currentFrame
         onSideBarToggleRequested: sideBar.visible = !sideBar.visible
+        onSettingsRequested: sideBar.showSettings()
+        onFileRequested: sideBar.showProjectFiles()
     }
 }

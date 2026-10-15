@@ -33,11 +33,13 @@ file(GLOB_RECURSE EGP_APP_UI_CPP_FILES
 	CONFIGURE_DEPENDS
 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	src/Components/*.cpp
+	src/features/*.cpp
 )
 file(GLOB_RECURSE EGP_APP_UI_HPP_FILES
 	CONFIGURE_DEPENDS
 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	src/Components/*.hpp
+	src/features/*.hpp
 )
 add_executable(
 	EGP_app
@@ -68,6 +70,7 @@ qt_add_resources(
 target_include_directories(EGP_app
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/src/Components/headers
+		${CMAKE_CURRENT_SOURCE_DIR}/src/features/headers
 )
 target_link_libraries(EGP_app
 	PRIVATE

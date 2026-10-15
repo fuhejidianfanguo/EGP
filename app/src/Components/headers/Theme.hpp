@@ -1,5 +1,6 @@
 #pragma once
 
+#include <EGP/settings_structures.hpp>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include <QObject>
@@ -78,20 +79,6 @@ class Theme final : public QObject {
   void controlPressedChanged();
 
  private:
-  QString primary_ = "#2196F3";
-  QString secondary_ = "#797979";
-  QString tertiary_ = "#888888";
-  QString background_ = "#a1a1a1";
-  QString text_ = "#333333";
-  QString surface_ = "#ffffff";
-  QString surfacePressed_ = "#f0f0f0";
-  QString border_ = "#a0a0a0";
-  QString sliderBorder_ = "#bdbdbd";
-  QString track_ = "#ffffff";
-  QString dark_ = "#2a2a2a";
-  QString danger_ = "#ff0000";
-  QString sidebar_ = "#a9a9a9";
-  QString statusBar_ = "#d3d3d3";
-  QString controlPressed_ = "#d0d0d0";
+  Settings::Theme theme_;
 };
 }  // namespace EGP::Components
