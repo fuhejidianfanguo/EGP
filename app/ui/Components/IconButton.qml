@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls.Basic
+import EGP.ui
 
 // 图标按钮：字体的 family/styleName 由 FaIcon 统一处理，调用方无需再手动传递。
 Button {

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "SideBarPages"
+import EGP.ui
 
 Rectangle {
     id: root
@@ -11,15 +12,20 @@ Rectangle {
     color: Theme.sidebar
 
     function showPage(pageUrl) {
-        pageStack.replace(pageUrl)
+        var pageName = pageUrl.toString().split("/").pop().replace(".qml", "");
+
+        if (pageStack.currentItem && pageStack.currentItem.objectName === pageName) {
+            return; // 已经是目标页面，不重复替换
+        }
+        pageStack.replaceCurrentItem(pageUrl);
     }
 
     function showSettings() {
-        showPage(Qt.resolvedUrl("SideBarPages/Settings.qml"))
+        showPage(Qt.resolvedUrl("SideBarPages/Settings.qml"));
     }
 
     function showProjectFiles() {
-        showPage(Qt.resolvedUrl("SideBarPages/ProjectFiles.qml"))
+        showPage(Qt.resolvedUrl("SideBarPages/ProjectFiles.qml"));
     }
 
     StackView {
