@@ -1,4 +1,5 @@
 import QtQuick
+import EGP.ui
 
 // IconFonts 是由 C++ 注册的 singleton，确保所有图标使用同一组字体。
 Text {

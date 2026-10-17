@@ -12,7 +12,7 @@ struct Settings {
     std::string primary = "#2196F3";
     std::string secondary = "#797979";
     std::string tertiary = "#888888";
-    std::string background = "#572525";
+    std::string background = "#ffffff";
     std::string text = "#333333";
     std::string surface = "#ffffff";
     std::string surfacePressed = "#f0f0f0";

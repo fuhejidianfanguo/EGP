@@ -41,8 +41,7 @@ file(GLOB_RECURSE EGP_APP_UI_HPP_FILES
 	src/Components/*.hpp
 	src/features/*.hpp
 )
-add_executable(
-	EGP_app
+add_executable(EGP_app
 	src/main.cpp
 )
 qt_add_qml_module(
