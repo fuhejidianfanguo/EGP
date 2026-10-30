@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import "../Components"
+import EGP.components
 
 // 只负责应用骨架布局，具体内容交给各子组件。
 ColumnLayout {

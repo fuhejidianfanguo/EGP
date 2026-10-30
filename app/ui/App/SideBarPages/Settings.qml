@@ -2,8 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
-import EGP.ui
-import "../../Components"
+import EGP.components
 
 Rectangle {
     id: root

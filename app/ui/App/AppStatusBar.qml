@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import EGP.ui
-import "../Components"
+import EGP.components
 
 // 状态栏的具体内容；通过信号把动作交给 Framework 处理，避免反向依赖具体布局。
 StatusBar {

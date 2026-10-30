@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import EGP.ui
+import EGP.components
 
 // 状态栏容器：内容由调用方通过默认属性填充，内容区横向铺满。
 Rectangle {

@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "SideBarPages"
-import EGP.ui
+import EGP.components
 
 Rectangle {
     id: root

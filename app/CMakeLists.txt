@@ -32,13 +32,11 @@ file(GLOB_RECURSE EGP_APP_UI_RESOURCE_FILES
 file(GLOB_RECURSE EGP_APP_UI_CPP_FILES
 	CONFIGURE_DEPENDS
 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-	src/Components/*.cpp
 	src/features/*.cpp
 )
 file(GLOB_RECURSE EGP_APP_UI_HPP_FILES
 	CONFIGURE_DEPENDS
 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-	src/Components/*.hpp
 	src/features/*.hpp
 )
 add_executable(EGP_app
@@ -68,7 +66,6 @@ qt_add_resources(
 )
 target_include_directories(EGP_app
 	PRIVATE
-		${CMAKE_CURRENT_SOURCE_DIR}/src/Components/headers
 		${CMAKE_CURRENT_SOURCE_DIR}/src/features/headers
 )
 target_link_libraries(EGP_app
@@ -84,10 +81,12 @@ target_link_libraries(EGP_app
 target_link_libraries(EGP_app
 	PRIVATE
 		EGP_common
+		EGP_components
 		glaze::glaze
 )
-target_compile_definitions(EGP_app PRIVATE QT_NO_EMIT)
-
+qt_import_qml_plugins(EGP_app)
+target_sources(EGP_app PRIVATE $<TARGET_OBJECTS:EGP_componentsplugin_init>)
+target_link_libraries(EGP_app PRIVATE EGP_componentsplugin)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(EGP_app PRIVATE QT_QML_DEBUG)
 endif()

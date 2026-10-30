@@ -1,5 +1,4 @@
-﻿#include <EGP/data_structures.h>
-
+﻿#include <EGP/data_structures.hpp>
 #include <cstdint>
 #include <string>
 #include <variant>

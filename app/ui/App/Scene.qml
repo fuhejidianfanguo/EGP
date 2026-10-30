@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick3D
-import EGP.ui
+import EGP.components
 
 View3D {
     id: root
