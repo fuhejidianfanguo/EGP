@@ -1,11 +1,5 @@
-file(
-    GLOB_RECURSE EGP_APP_SOURCE
-    CONFIGURE_DEPENDS
-    "src/*.cpp"
-    "src/*.hpp"
-    "include/*.hpp"
-)
-add_library(EGP_window ${EGP_APP_SOURCE})
+egp_collect_source(EGP_WINDOW_SOURCE)
+add_library(EGP_window ${EGP_WINDOW_SOURCE})
 target_include_directories(
     EGP_window
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include

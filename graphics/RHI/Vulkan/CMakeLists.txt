@@ -1,1 +1,3 @@
-
+egp_collect_source(EGP_VULKAN_IMPL_SOURCE)
+add_library(EGP_VULKAN_IMPL ${EGP_VULKAN_IMPL_SOURCE})
+target_link_libraries(EGP_VULKAN_IMPL PUBLIC EGP_VULKAN)
