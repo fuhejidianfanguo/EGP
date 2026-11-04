@@ -1,7 +1,7 @@
 egp_collect_source(EGP_APP_SOURCE)
 
 add_executable(EGP_app ${EGP_APP_SOURCE} main.cpp)
-target_link_libraries(EGP_app PRIVATE EGP_core EGP_ui)
+target_link_libraries(EGP_app PRIVATE EGP_core EGP_ui imgui)
 
 if(WIN32 AND MINGW)
     target_link_options(EGP_app PRIVATE -static-libgcc -static-libstdc++)

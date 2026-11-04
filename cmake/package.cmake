@@ -7,6 +7,8 @@ if(EGP_USE_GH_PROXY)
     set(EGP_GITHUB_URL "${EGP_GH_PROXY}${EGP_GITHUB_URL}")
 endif()
 
+set(EGP_GRAPHICS_API_CHOICE "Vulkan" CACHE STRING "Graphics API choices")
+
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY ${EGP_GITHUB_URL}glfw/glfw.git
@@ -23,26 +25,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glfw googletest)
 
-find_package(Vulkan QUIET)
-if(NOT Vulkan_FOUND)
-
-    FetchContent_Declare(
-        Vulkan-Headers
-        GIT_REPOSITORY ${EGP_GITHUB_URL}KhronosGroup/Vulkan-Headers.git
-        GIT_TAG vulkan-sdk-1.4.363.0
-        GIT_SHALLOW TRUE
-    )
-    FetchContent_Declare(
-        Vulkan-Loader
-        GIT_REPOSITORY ${EGP_GITHUB_URL}KhronosGroup/Vulkan-Loader.git
-        GIT_TAG vulkan-sdk-1.4.363.0
-        GIT_SHALLOW TRUE
-    )
-    set(PROJECT_IS_TOP_LEVEL OFF)
-    FetchContent_MakeAvailable(Vulkan-Headers Vulkan-Loader)
-    add_library(EGP_VULKAN INTERFACE)
-    target_link_libraries(EGP_VULKAN INTERFACE Vulkan::Headers Vulkan::Loader)
-else()
-    add_library(EGP_VULKAN INTERFACE)
-    target_link_libraries(EGP_VULKAN INTERFACE Vulkan::Vulkan)
+if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
+    include("${CMAKE_CURRENT_LIST_DIR}/vulkan_package.cmake")
 endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/imgui_package.cmake")
