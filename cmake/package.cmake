@@ -23,7 +23,14 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
-FetchContent_MakeAvailable(glfw googletest)
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY ${EGP_GITHUB_URL}g-truc/glm.git
+    GIT_TAG 1.0.3
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(glfw googletest glm)
 
 if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
     include("${CMAKE_CURRENT_LIST_DIR}/vulkan_package.cmake")
