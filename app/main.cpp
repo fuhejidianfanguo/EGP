@@ -1,10 +1,17 @@
-#include "EGP/GLFW.hpp"
+#include <EGP/GLFW.hpp>
+#include <EGP/rhi.hpp>
+
 #include <iostream>
+
 int main() {
   try {
     EGP::GLFWWindow& window = EGP::GLFWWindow::getInstance(800, 600, "EGP");
+    auto rhi = EGP::RHI::create();
+    rhi->init(window.getNativeWindowHandle());
+    rhi->clear({0.1F, 0.2F, 0.3F, 1.0F}, 1.0F);
     while (!window.shouldClose()) {
       window.pollEvents();
+      rhi->drawFrame();
     }
   } catch (const std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;

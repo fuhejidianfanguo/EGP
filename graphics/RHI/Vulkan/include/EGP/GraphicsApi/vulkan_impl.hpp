@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include <EGP/rhi.hpp>
 #include <vulkan/vulkan.hpp>
@@ -17,13 +18,48 @@ class VulkanAPI : public RHI::GraphicsAPI {
 
   auto init(void* nativeWindowHandle) -> void override;
   auto clear(const glm::vec4& color, float depth) -> void override;
+  auto drawFrame() -> void override;
 
  private:
   void createInstance();
+  void createDebugMessenger();
+  void createSurface();
+  void pickPhysicalDevice();
+  void createDevice();
+  void createSwapchain();
+  void createImageViews();
+  void createRenderPass();
+  void createFramebuffers();
+  void createCommandPool();
+  void createCommandBuffers();
+  void createSyncObjects();
+  void recordCommandBuffer(vk::CommandBuffer commandBuffer, std::uint32_t imageIndex);
 
   void* nativeWindowHandle_ = nullptr;
   vk::Instance instance_;
   vk::DebugUtilsMessengerEXT debugMessenger_;
+  vk::SurfaceKHR surface_;
+  vk::PhysicalDevice physicalDevice_;
+  vk::Device device_;
+  vk::Queue graphicsQueue_;
+  vk::Queue presentQueue_;
+  std::uint32_t graphicsQueueFamily_ = 0;
+  std::uint32_t presentQueueFamily_ = 0;
+  vk::SwapchainKHR swapchain_;
+  vk::Format swapchainFormat_ = vk::Format::eUndefined;
+  vk::Extent2D swapchainExtent_{};
+  std::vector<vk::Image> swapchainImages_;
+  std::vector<vk::ImageView> swapchainImageViews_;
+  vk::RenderPass renderPass_;
+  std::vector<vk::Framebuffer> framebuffers_;
+  vk::CommandPool commandPool_;
+  std::vector<vk::CommandBuffer> commandBuffers_;
+  std::vector<vk::Semaphore> imageAvailableSemaphores_;
+  std::vector<vk::Semaphore> renderFinishedSemaphores_;
+  std::vector<vk::Fence> inFlightFences_;
+  glm::vec4 clearColor_{0.0F, 0.0F, 0.0F, 1.0F};
+  float clearDepth_ = 1.0F;
+  std::uint32_t currentFrame_ = 0;
 };
 
 }  // namespace EGP

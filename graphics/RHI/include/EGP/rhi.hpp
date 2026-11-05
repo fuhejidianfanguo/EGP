@@ -14,6 +14,7 @@ class RHI {
 
     virtual auto init(void* nativeWindowHandle) -> void = 0;
     virtual auto clear(const glm::vec4& color, float depth) -> void = 0;
+    virtual auto drawFrame() -> void = 0;
   };
 
   static auto create() -> std::unique_ptr<RHI>;
@@ -24,6 +25,7 @@ class RHI {
 
   auto init(void* nativeWindowHandle) -> void;
   auto clear(const glm::vec4& color, float depth) -> void;
+  auto drawFrame() -> void;
 
  private:
   RHI();

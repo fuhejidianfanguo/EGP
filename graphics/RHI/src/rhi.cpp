@@ -19,4 +19,6 @@ auto RHI::init(void* nativeWindowHandle) -> void { api_->init(nativeWindowHandle
 
 auto RHI::clear(const glm::vec4& color, float depth) -> void { api_->clear(color, depth); }
 
+auto RHI::drawFrame() -> void { api_->drawFrame(); }
+
 }  // namespace EGP
