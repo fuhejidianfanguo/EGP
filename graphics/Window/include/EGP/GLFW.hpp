@@ -19,9 +19,11 @@ class GLFWWindow : public Window {
   auto shouldClose() const -> bool override;
   auto getProperties() const -> WindowProperties override;
   auto getNativeWindowHandle() const -> void* override;
+  auto setResizeCallback(ResizeCallback callback) -> void override;
  private:
   GLFWWindow(int width, int height, std::string title);
   std::string title_;
   GLFWwindow* window_;
+  ResizeCallback resizeCallback_;
 };
 }  // namespace EGP

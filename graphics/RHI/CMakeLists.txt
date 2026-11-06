@@ -6,10 +6,10 @@ target_link_libraries(EGP_rhi PUBLIC glm)
 target_compile_definitions(EGP_rhi PRIVATE EGP_GRAPHICS_API="${EGP_GRAPHICS_API_CHOICE}")
 
 if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
-    target_link_libraries(EGP_rhi PUBLIC EGP_VULKAN glfw)
-    target_include_directories(EGP_rhi PUBLIC Vulkan/include)
-    file(GLOB_RECURSE EGP_RHI_VULKAN_SOURCE CONFIGURE_DEPENDS
+  target_link_libraries(EGP_rhi PUBLIC EGP_VULKAN glfw)
+  target_include_directories(EGP_rhi PUBLIC Vulkan/include)
+  file(GLOB_RECURSE EGP_RHI_VULKAN_SOURCE CONFIGURE_DEPENDS
         "${CMAKE_CURRENT_SOURCE_DIR}/Vulkan/src/*.cpp"
     )
-    target_sources(EGP_rhi PRIVATE ${EGP_RHI_VULKAN_SOURCE})
+  target_sources(EGP_rhi PRIVATE ${EGP_RHI_VULKAN_SOURCE})
 endif()

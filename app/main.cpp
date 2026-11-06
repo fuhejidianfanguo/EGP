@@ -9,6 +9,7 @@ int main() {
     auto rhi = EGP::RHI::create();
     rhi->init(window.getNativeWindowHandle());
     rhi->clear({0.1F, 0.2F, 0.3F, 1.0F}, 1.0F);
+    window.setResizeCallback([&rhi](int, int) { rhi->onFramebufferResized(); });
     while (!window.shouldClose()) {
       window.pollEvents();
       rhi->drawFrame();

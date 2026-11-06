@@ -21,4 +21,8 @@ auto RHI::clear(const glm::vec4& color, float depth) -> void { api_->clear(color
 
 auto RHI::drawFrame() -> void { api_->drawFrame(); }
 
+auto RHI::resize() -> void { api_->resize(); }
+
+auto RHI::onFramebufferResized() -> void { api_->onFramebufferResized(); }
+
 }  // namespace EGP

@@ -19,6 +19,8 @@ class VulkanAPI : public RHI::GraphicsAPI {
   auto init(void* nativeWindowHandle) -> void override;
   auto clear(const glm::vec4& color, float depth) -> void override;
   auto drawFrame() -> void override;
+  auto resize() -> void override;
+  auto onFramebufferResized() -> void override;
 
  private:
   void createInstance();
@@ -28,6 +30,7 @@ class VulkanAPI : public RHI::GraphicsAPI {
   void createDevice();
   void createSwapchain();
   void createImageViews();
+  void destroySwapchainResources();
   void createRenderPass();
   void createFramebuffers();
   void createCommandPool();
@@ -50,6 +53,7 @@ class VulkanAPI : public RHI::GraphicsAPI {
   vk::Extent2D swapchainExtent_{};
   std::vector<vk::Image> swapchainImages_;
   std::vector<vk::ImageView> swapchainImageViews_;
+  bool framebufferResized_ = false;
   vk::RenderPass renderPass_;
   std::vector<vk::Framebuffer> framebuffers_;
   vk::CommandPool commandPool_;

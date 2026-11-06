@@ -1,4 +1,7 @@
 #include "EGP/GLFW.hpp"
+
+#include <utility>
+
 namespace EGP {
 
 auto GLFWWindow::getInstance(int width, int height, std::string title)
@@ -38,6 +41,18 @@ auto GLFWWindow::getProperties() const -> Window::WindowProperties {
 
 auto GLFWWindow::getNativeWindowHandle() const -> void* {
   return static_cast<void*>(window_);
+}
+
+auto GLFWWindow::setResizeCallback(ResizeCallback callback) -> void {
+  resizeCallback_ = std::move(callback);
+  glfwSetWindowUserPointer(window_, this);
+  glfwSetFramebufferSizeCallback(
+      window_, [](GLFWwindow* window, int width, int height) {
+        auto* self = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        if (self != nullptr && self->resizeCallback_) {
+          self->resizeCallback_(width, height);
+        }
+      });
 }
 
 }  // namespace EGP

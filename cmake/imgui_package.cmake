@@ -7,7 +7,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(imgui)
 
 add_library(
-    imgui
+    EGP_IMGUI
     ${imgui_SOURCE_DIR}/imgui.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
     ${imgui_SOURCE_DIR}/imgui_tables.cpp
@@ -15,17 +15,17 @@ add_library(
     ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
 )
 if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
-    target_sources(
-        imgui
+  target_sources(
+        EGP_IMGUI
         PRIVATE ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
     )
 endif()
 
 target_include_directories(
-    imgui
+    EGP_IMGUI
     PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends
 )
-target_link_libraries(imgui PUBLIC glfw)
+target_link_libraries(EGP_IMGUI PUBLIC glfw)
 if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
-    target_link_libraries(imgui PUBLIC EGP_VULKAN)
+  target_link_libraries(EGP_IMGUI PUBLIC EGP_VULKAN)
 endif()
