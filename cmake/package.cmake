@@ -33,7 +33,5 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glfw googletest glm)
 
 if(EGP_GRAPHICS_API_CHOICE STREQUAL "Vulkan")
-    include("${CMAKE_CURRENT_LIST_DIR}/vulkan_package.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/package/vulkan_package.cmake")
 endif()
-
-include("${CMAKE_CURRENT_LIST_DIR}/imgui_package.cmake")

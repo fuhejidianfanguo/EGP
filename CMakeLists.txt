@@ -7,9 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include("cmake/package.cmake")
-include("cmake/collect_source.cmake")
+include("cmake/tools/collect_source.cmake")
 
 add_subdirectory(core)
-add_subdirectory(graphics)
-add_subdirectory(ui)
+add_subdirectory(engine)
 add_subdirectory(app)
