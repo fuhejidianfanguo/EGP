@@ -10,15 +10,13 @@ auto RHI::create() -> std::unique_ptr<RHI> {
 
 RHI::RHI() {
   if constexpr (apiKindFromString(EGP_GRAPHICS_API) == ApiKind::Vulkan) {
-    api_ = std::make_unique<VulkanAPI>(nullptr);
+    api_ = std::make_unique<VulkanAPI>();
   }
 }
 
 RHI::~RHI() = default;
 
-auto RHI::init(void* nativeWindowHandle) -> void {
-  api_->init(nativeWindowHandle);
-}
+auto RHI::init(Window& window) -> void { api_->init(window); }
 
 auto RHI::clear(const glm::vec4& color, float depth) -> void {
   api_->clear(color, depth);

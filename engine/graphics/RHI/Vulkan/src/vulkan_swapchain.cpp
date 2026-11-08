@@ -1,6 +1,7 @@
-#include <GLFW/glfw3.h>
-
 #include <EGP/GraphicsApi/vulkan_impl.hpp>
+
+#include <EGP/Window.hpp>
+
 #include <algorithm>
 #include <array>
 #include <iterator>
@@ -30,16 +31,12 @@ auto VulkanAPI::createSwapchain() -> void {
         std::numeric_limits<std::uint32_t>::max()) {
       return capabilities.currentExtent;
     }
-    int width = 0;
-    int height = 0;
-    glfwGetFramebufferSize(static_cast<GLFWwindow*>(nativeWindowHandle_),
-                           &width, &height);
-    return vk::Extent2D{std::clamp(static_cast<std::uint32_t>(width),
-                                   capabilities.minImageExtent.width,
-                                   capabilities.maxImageExtent.width),
-                        std::clamp(static_cast<std::uint32_t>(height),
-                                   capabilities.minImageExtent.height,
-                                   capabilities.maxImageExtent.height)};
+    const auto framebuffer = window_->getFramebufferSize();
+    return vk::Extent2D{
+        std::clamp(framebuffer.width, capabilities.minImageExtent.width,
+                   capabilities.maxImageExtent.width),
+        std::clamp(framebuffer.height, capabilities.minImageExtent.height,
+                   capabilities.maxImageExtent.height)};
   }();
 
   const auto imageCount =

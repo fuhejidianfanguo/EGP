@@ -1,7 +1,7 @@
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 #include <EGP/GraphicsApi/vulkan_impl.hpp>
+
+#include <EGP/Window.hpp>
+
 #include <algorithm>
 #include <stdexcept>
 #include <string_view>
@@ -19,15 +19,6 @@ auto validationLayersSupported() -> bool {
         return std::string_view{layer.layerName.data()} ==
                detail::kValidationLayer;
       });
-}
-
-auto requiredInstanceExtensions() -> std::vector<const char*> {
-  std::uint32_t count = 0;
-  const char* const* names = glfwGetRequiredInstanceExtensions(&count);
-  if (names == nullptr) {
-    throw std::runtime_error("GLFW does not support Vulkan");
-  }
-  return {names, names + count};
 }
 
 }  // namespace
@@ -48,7 +39,7 @@ auto VulkanAPI::createInstance() -> void {
     layers.push_back(detail::kValidationLayer);
   }
 
-  auto extensions = requiredInstanceExtensions();
+  auto extensions = window_->getRequiredVulkanInstanceExtensions();
   extensions.push_back(vk::EXTDebugUtilsExtensionName);
 
   vk::InstanceCreateInfo createInfo;
@@ -80,18 +71,11 @@ auto VulkanAPI::createDebugMessenger() -> void {
 }
 
 auto VulkanAPI::createSurface() -> void {
-  if (nativeWindowHandle_ == nullptr) {
-    throw std::runtime_error("Native window handle is null");
+  if (window_ == nullptr) {
+    throw std::runtime_error("Window is not set");
   }
 
-  VkSurfaceKHR surface = nullptr;
-  const auto result = static_cast<vk::Result>(glfwCreateWindowSurface(
-      instance_, static_cast<GLFWwindow*>(nativeWindowHandle_), nullptr,
-      &surface));
-  if (result != vk::Result::eSuccess) {
-    throw std::runtime_error("Failed to create window surface");
-  }
-  surface_ = vk::SurfaceKHR{surface};
+  surface_ = window_->createVulkanSurface(instance_);
 }
 
 }  // namespace EGP

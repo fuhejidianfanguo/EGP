@@ -1,6 +1,8 @@
 #include "EGP/GLFW.hpp"
 
+#include <cstdint>
 #include <utility>
+#include <vector>
 
 namespace EGP {
 
@@ -41,6 +43,35 @@ auto GLFWWindow::getProperties() const -> Window::WindowProperties {
 
 auto GLFWWindow::getNativeWindowHandle() const -> void* {
   return static_cast<void*>(window_);
+}
+
+auto GLFWWindow::getFramebufferSize() const -> vk::Extent2D {
+  int width = 0;
+  int height = 0;
+  glfwGetFramebufferSize(window_, &width, &height);
+  return {static_cast<std::uint32_t>(width),
+          static_cast<std::uint32_t>(height)};
+}
+
+auto GLFWWindow::getRequiredVulkanInstanceExtensions() const
+    -> std::vector<const char*> {
+  std::uint32_t count = 0;
+  const char* const* names = glfwGetRequiredInstanceExtensions(&count);
+  if (names == nullptr) {
+    throw std::runtime_error("GLFW does not support Vulkan");
+  }
+  return {names, names + count};
+}
+
+auto GLFWWindow::createVulkanSurface(vk::Instance instance) const
+    -> vk::SurfaceKHR {
+  VkSurfaceKHR surface = nullptr;
+  const auto result = static_cast<vk::Result>(glfwCreateWindowSurface(
+      instance, window_, nullptr, &surface));
+  if (result != vk::Result::eSuccess) {
+    throw std::runtime_error("Failed to create window surface");
+  }
+  return vk::SurfaceKHR{surface};
 }
 
 auto GLFWWindow::setResizeCallback(ResizeCallback callback) -> void {

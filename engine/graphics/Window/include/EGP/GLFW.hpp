@@ -19,6 +19,10 @@ class GLFWWindow : public Window {
   auto shouldClose() const -> bool override;
   auto getProperties() const -> WindowProperties override;
   auto getNativeWindowHandle() const -> void* override;
+  auto getFramebufferSize() const -> vk::Extent2D override;
+  auto getRequiredVulkanInstanceExtensions() const
+      -> std::vector<const char*> override;
+  auto createVulkanSurface(vk::Instance instance) const -> vk::SurfaceKHR override;
   auto setResizeCallback(ResizeCallback callback) -> void override;
 
  private:

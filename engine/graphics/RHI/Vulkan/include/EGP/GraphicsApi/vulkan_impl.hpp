@@ -7,15 +7,17 @@
 
 namespace EGP {
 
+class Window;
+
 class VulkanAPI : public RHI::GraphicsAPI {
  public:
-  explicit VulkanAPI(void* nativeWindowHandle);
+  VulkanAPI() = default;
   ~VulkanAPI() override;
 
   VulkanAPI(const VulkanAPI&) = delete;
   VulkanAPI& operator=(const VulkanAPI&) = delete;
 
-  auto init(void* nativeWindowHandle) -> void override;
+  auto init(Window& window) -> void override;
   auto clear(const glm::vec4& color, float depth) -> void override;
   auto drawFrame() -> void override;
   auto resize() -> void override;
@@ -38,7 +40,7 @@ class VulkanAPI : public RHI::GraphicsAPI {
   void recordCommandBuffer(vk::CommandBuffer commandBuffer,
                            std::uint32_t imageIndex);
 
-  void* nativeWindowHandle_ = nullptr;
+  Window* window_ = nullptr;
   vk::Instance instance_;
   vk::DebugUtilsMessengerEXT debugMessenger_;
   vk::SurfaceKHR surface_;

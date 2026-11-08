@@ -5,13 +5,15 @@
 
 namespace EGP {
 
+class Window;
+
 class RHI {
  public:
   class GraphicsAPI {
    public:
     virtual ~GraphicsAPI() = default;
 
-    virtual auto init(void* nativeWindowHandle) -> void = 0;
+    virtual auto init(Window& window) -> void = 0;
     virtual auto clear(const glm::vec4& color, float depth) -> void = 0;
     virtual auto drawFrame() -> void = 0;
     virtual auto resize() -> void = 0;
@@ -24,7 +26,7 @@ class RHI {
   RHI(const RHI&) = delete;
   RHI& operator=(const RHI&) = delete;
 
-  auto init(void* nativeWindowHandle) -> void;
+  auto init(Window& window) -> void;
   auto clear(const glm::vec4& color, float depth) -> void;
   auto drawFrame() -> void;
   auto resize() -> void;

@@ -4,4 +4,4 @@ target_include_directories(
     EGP_window
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_link_libraries(EGP_window PUBLIC glfw)
+target_link_libraries(EGP_window PUBLIC glfw EGP_VULKAN)

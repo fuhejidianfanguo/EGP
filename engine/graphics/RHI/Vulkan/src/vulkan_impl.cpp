@@ -1,13 +1,13 @@
 #include <EGP/GraphicsApi/vulkan_impl.hpp>
+
+#include <EGP/Window.hpp>
+
 #include <limits>
 #include <stdexcept>
 
 #include "vulkan_internal.hpp"
 
 namespace EGP {
-
-VulkanAPI::VulkanAPI(void* nativeWindowHandle)
-    : nativeWindowHandle_(nativeWindowHandle) {}
 
 VulkanAPI::~VulkanAPI() { destroy(); }
 
@@ -43,8 +43,8 @@ auto VulkanAPI::destroy() -> void {
   }
 }
 
-auto VulkanAPI::init(void* nativeWindowHandle) -> void {
-  nativeWindowHandle_ = nativeWindowHandle;
+auto VulkanAPI::init(Window& window) -> void {
+  window_ = &window;
   createInstance();
   createDebugMessenger();
   createSurface();
