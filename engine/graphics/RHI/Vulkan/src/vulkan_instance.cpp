@@ -32,15 +32,15 @@ auto VulkanAPI::createInstance() -> void {
   appInfo.setApiVersion(vk::ApiVersion13);
 
   std::vector<const char*> layers;
+  auto extensions = window_->getRequiredVulkanInstanceExtensions();
+
   if constexpr (detail::kEnableValidation) {
     if (!validationLayersSupported()) {
       throw std::runtime_error("Validation layer not available");
     }
     layers.push_back(detail::kValidationLayer);
+    extensions.push_back(vk::EXTDebugUtilsExtensionName);
   }
-
-  auto extensions = window_->getRequiredVulkanInstanceExtensions();
-  extensions.push_back(vk::EXTDebugUtilsExtensionName);
 
   vk::InstanceCreateInfo createInfo;
   createInfo.setPApplicationInfo(&appInfo);
