@@ -1,8 +1,7 @@
 #pragma once
 
-#include <memory>
-
 #include <glm/vec4.hpp>
+#include <memory>
 
 namespace EGP {
 

@@ -1,9 +1,10 @@
-#include <EGP/GraphicsApi/vulkan_impl.hpp>
-
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include <EGP/GraphicsApi/vulkan_impl.hpp>
+#include <algorithm>
 #include <stdexcept>
-#include <string>
+#include <string_view>
 #include <vector>
 
 #include "vulkan_internal.hpp"
@@ -13,21 +14,20 @@ namespace EGP {
 namespace {
 
 auto validationLayersSupported() -> bool {
-  for (const auto& layer : vk::enumerateInstanceLayerProperties()) {
-    if (std::string(layer.layerName.data()) == detail::kValidationLayer) {
-      return true;
-    }
-  }
-  return false;
+  return std::ranges::any_of(
+      vk::enumerateInstanceLayerProperties(), [](const auto& layer) {
+        return std::string_view{layer.layerName.data()} ==
+               detail::kValidationLayer;
+      });
 }
 
 auto requiredInstanceExtensions() -> std::vector<const char*> {
   std::uint32_t count = 0;
-  const char** names = glfwGetRequiredInstanceExtensions(&count);
+  const char* const* names = glfwGetRequiredInstanceExtensions(&count);
   if (names == nullptr) {
     throw std::runtime_error("GLFW does not support Vulkan");
   }
-  return std::vector<const char*>(names, names + count);
+  return {names, names + count};
 }
 
 }  // namespace
@@ -35,13 +35,13 @@ auto requiredInstanceExtensions() -> std::vector<const char*> {
 auto VulkanAPI::createInstance() -> void {
   vk::ApplicationInfo appInfo;
   appInfo.setPApplicationName("EGP");
-  appInfo.setApplicationVersion(VK_MAKE_VERSION(0, 0, 1));
+  appInfo.setApplicationVersion(vk::makeApiVersion(0, 0, 0, 1));
   appInfo.setPEngineName("EGP");
-  appInfo.setEngineVersion(VK_MAKE_VERSION(0, 0, 1));
-  appInfo.setApiVersion(VK_API_VERSION_1_3);
+  appInfo.setEngineVersion(vk::makeApiVersion(0, 0, 0, 1));
+  appInfo.setApiVersion(vk::ApiVersion13);
 
-  auto layers = std::vector<const char*>{};
-  if (detail::kEnableValidation) {
+  std::vector<const char*> layers;
+  if constexpr (detail::kEnableValidation) {
     if (!validationLayersSupported()) {
       throw std::runtime_error("Validation layer not available");
     }
@@ -49,7 +49,7 @@ auto VulkanAPI::createInstance() -> void {
   }
 
   auto extensions = requiredInstanceExtensions();
-  extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+  extensions.push_back(vk::EXTDebugUtilsExtensionName);
 
   vk::InstanceCreateInfo createInfo;
   createInfo.setPApplicationInfo(&appInfo);
@@ -60,19 +60,21 @@ auto VulkanAPI::createInstance() -> void {
 }
 
 auto VulkanAPI::createDebugMessenger() -> void {
-  if (!detail::kEnableValidation) {
+  if constexpr (!detail::kEnableValidation) {
     return;
   }
+
   vk::DebugUtilsMessengerCreateInfoEXT createInfo;
   createInfo.setMessageSeverity(
       vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
       vk::DebugUtilsMessageSeverityFlagBitsEXT::eError);
-  createInfo.setMessageType(
-      vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
-      vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
-      vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance);
+  createInfo.setMessageType(vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+                            vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+                            vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance);
   createInfo.setPfnUserCallback(&detail::debugCallback);
-  vk::detail::DispatchLoaderDynamic dispatch(instance_, vkGetInstanceProcAddr);
+
+  const vk::detail::DispatchLoaderDynamic dispatch(instance_,
+                                                   vkGetInstanceProcAddr);
   debugMessenger_ =
       instance_.createDebugUtilsMessengerEXT(createInfo, nullptr, dispatch);
 }
@@ -81,14 +83,15 @@ auto VulkanAPI::createSurface() -> void {
   if (nativeWindowHandle_ == nullptr) {
     throw std::runtime_error("Native window handle is null");
   }
-  VkSurfaceKHR surface = VK_NULL_HANDLE;
-  const auto result = glfwCreateWindowSurface(
+
+  VkSurfaceKHR surface = nullptr;
+  const auto result = static_cast<vk::Result>(glfwCreateWindowSurface(
       instance_, static_cast<GLFWwindow*>(nativeWindowHandle_), nullptr,
-      &surface);
-  if (result != VK_SUCCESS) {
+      &surface));
+  if (result != vk::Result::eSuccess) {
     throw std::runtime_error("Failed to create window surface");
   }
-  surface_ = vk::SurfaceKHR(surface);
+  surface_ = vk::SurfaceKHR{surface};
 }
 
 }  // namespace EGP

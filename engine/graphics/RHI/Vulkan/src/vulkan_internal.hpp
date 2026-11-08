@@ -1,15 +1,16 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <iostream>
-
 #include <vulkan/vulkan.hpp>
 
 namespace EGP::detail {
 
 inline constexpr const char* kValidationLayer = "VK_LAYER_KHRONOS_validation";
 
-inline constexpr const char* kDeviceExtensions[] = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+inline const std::array<const char*, 1> kDeviceExtensions{
+    vk::KHRSwapchainExtensionName};
 
 inline constexpr std::uint32_t kMaxFramesInFlight = 2;
 
@@ -19,16 +20,16 @@ inline constexpr bool kEnableValidation = false;
 inline constexpr bool kEnableValidation = true;
 #endif
 
-inline auto debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
-                          VkDebugUtilsMessageTypeFlagsEXT,
-                          const VkDebugUtilsMessengerCallbackDataEXT* data,
-                          void*) -> VKAPI_ATTR VkBool32 {
-  if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+inline auto debugCallback(vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
+                          vk::DebugUtilsMessageTypeFlagsEXT,
+                          const vk::DebugUtilsMessengerCallbackDataEXT* data,
+                          void*) -> vk::Bool32 {
+  if (severity >= vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning) {
     if (data != nullptr && data->pMessage != nullptr) {
       std::cerr << "[vulkan] " << data->pMessage << '\n';
     }
   }
-  return VK_FALSE;
+  return vk::False;
 }
 
 }  // namespace EGP::detail

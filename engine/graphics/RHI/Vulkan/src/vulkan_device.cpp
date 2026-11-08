@@ -1,5 +1,5 @@
 #include <EGP/GraphicsApi/vulkan_impl.hpp>
-
+#include <limits>
 #include <set>
 #include <stdexcept>
 #include <vector>
@@ -9,41 +9,43 @@
 namespace EGP {
 
 auto VulkanAPI::pickPhysicalDevice() -> void {
-  for (const auto& candidate : instance_.enumeratePhysicalDevices()) {
-    std::uint32_t graphicsFamily = UINT32_MAX;
-    std::uint32_t presentFamily = UINT32_MAX;
+  constexpr auto kInvalidFamily = std::numeric_limits<std::uint32_t>::max();
+
+  for (const auto candidate : instance_.enumeratePhysicalDevices()) {
     const auto families = candidate.getQueueFamilyProperties();
+    auto graphicsFamily = kInvalidFamily;
+    auto presentFamily = kInvalidFamily;
+
     for (std::uint32_t i = 0; i < families.size(); ++i) {
-      if ((families[i].queueFlags & vk::QueueFlagBits::eGraphics) !=
-          vk::QueueFlags{}) {
+      if (families[i].queueFlags & vk::QueueFlagBits::eGraphics) {
         graphicsFamily = i;
       }
-      if (candidate.getSurfaceSupportKHR(i, surface_) == VK_TRUE) {
+      if (candidate.getSurfaceSupportKHR(i, surface_) == vk::True) {
         presentFamily = i;
       }
     }
-    if (graphicsFamily == UINT32_MAX || presentFamily == UINT32_MAX) {
+
+    if (graphicsFamily == kInvalidFamily || presentFamily == kInvalidFamily) {
       continue;
     }
-    std::uint32_t formatCount = 0;
-    std::uint32_t presentModeCount = 0;
-    candidate.getSurfaceFormatsKHR(surface_, &formatCount, nullptr);
-    candidate.getSurfacePresentModesKHR(surface_, &presentModeCount, nullptr);
-    if (formatCount == 0 || presentModeCount == 0) {
+    if (candidate.getSurfaceFormatsKHR(surface_).empty() ||
+        candidate.getSurfacePresentModesKHR(surface_).empty()) {
       continue;
     }
+
     physicalDevice_ = candidate;
     graphicsQueueFamily_ = graphicsFamily;
     presentQueueFamily_ = presentFamily;
     return;
   }
+
   throw std::runtime_error("No suitable Vulkan physical device found");
 }
 
 auto VulkanAPI::createDevice() -> void {
   const std::set<std::uint32_t> families{graphicsQueueFamily_,
                                          presentQueueFamily_};
-  const float priority = 1.0F;
+  constexpr float priority = 1.0F;
   std::vector<vk::DeviceQueueCreateInfo> queueInfos;
   for (const auto family : families) {
     vk::DeviceQueueCreateInfo info;
@@ -53,6 +55,19 @@ auto VulkanAPI::createDevice() -> void {
     queueInfos.push_back(info);
   }
 
+  const auto dynamicRenderingSupported =
+      physicalDevice_
+          .getFeatures2<vk::PhysicalDeviceFeatures2,
+                        vk::PhysicalDeviceVulkan13Features>()
+          .get<vk::PhysicalDeviceVulkan13Features>()
+          .dynamicRendering == vk::True;
+  if (!dynamicRenderingSupported) {
+    throw std::runtime_error("Dynamic rendering is not supported");
+  }
+
+  vk::PhysicalDeviceVulkan13Features vulkan13Features;
+  vulkan13Features.setDynamicRendering(vk::True);
+
   const auto features = physicalDevice_.getFeatures();
   vk::PhysicalDeviceFeatures enabled;
   enabled.setSamplerAnisotropy(features.samplerAnisotropy);
@@ -61,6 +76,7 @@ auto VulkanAPI::createDevice() -> void {
   createInfo.setQueueCreateInfos(queueInfos);
   createInfo.setPEnabledFeatures(&enabled);
   createInfo.setPEnabledExtensionNames(detail::kDeviceExtensions);
+  createInfo.setPNext(&vulkan13Features);
 
   device_ = physicalDevice_.createDevice(createInfo);
   graphicsQueue_ = device_.getQueue(graphicsQueueFamily_, 0);

@@ -1,9 +1,8 @@
 #pragma once
 
+#include <EGP/rhi.hpp>
 #include <cstdint>
 #include <vector>
-
-#include <EGP/rhi.hpp>
 #include <vulkan/vulkan.hpp>
 
 namespace EGP {
@@ -23,6 +22,7 @@ class VulkanAPI : public RHI::GraphicsAPI {
   auto onFramebufferResized() -> void override;
 
  private:
+  void destroy();
   void createInstance();
   void createDebugMessenger();
   void createSurface();
@@ -31,12 +31,12 @@ class VulkanAPI : public RHI::GraphicsAPI {
   void createSwapchain();
   void createImageViews();
   void destroySwapchainResources();
-  void createRenderPass();
-  void createFramebuffers();
+
   void createCommandPool();
   void createCommandBuffers();
   void createSyncObjects();
-  void recordCommandBuffer(vk::CommandBuffer commandBuffer, std::uint32_t imageIndex);
+  void recordCommandBuffer(vk::CommandBuffer commandBuffer,
+                           std::uint32_t imageIndex);
 
   void* nativeWindowHandle_ = nullptr;
   vk::Instance instance_;
@@ -54,15 +54,13 @@ class VulkanAPI : public RHI::GraphicsAPI {
   std::vector<vk::Image> swapchainImages_;
   std::vector<vk::ImageView> swapchainImageViews_;
   bool framebufferResized_ = false;
-  vk::RenderPass renderPass_;
-  std::vector<vk::Framebuffer> framebuffers_;
+
   vk::CommandPool commandPool_;
   std::vector<vk::CommandBuffer> commandBuffers_;
   std::vector<vk::Semaphore> imageAvailableSemaphores_;
   std::vector<vk::Semaphore> renderFinishedSemaphores_;
   std::vector<vk::Fence> inFlightFences_;
   glm::vec4 clearColor_{0.0F, 0.0F, 0.0F, 1.0F};
-  float clearDepth_ = 1.0F;
   std::uint32_t currentFrame_ = 0;
 };
 

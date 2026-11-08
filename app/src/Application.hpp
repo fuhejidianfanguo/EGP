@@ -1,7 +1,5 @@
 #pragma once
 
 namespace EGP {
-  class Application {
-
-  };
-}
+class Application {};
+}  // namespace EGP

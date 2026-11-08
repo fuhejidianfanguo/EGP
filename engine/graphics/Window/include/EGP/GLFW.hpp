@@ -20,6 +20,7 @@ class GLFWWindow : public Window {
   auto getProperties() const -> WindowProperties override;
   auto getNativeWindowHandle() const -> void* override;
   auto setResizeCallback(ResizeCallback callback) -> void override;
+
  private:
   GLFWWindow(int width, int height, std::string title);
   std::string title_;

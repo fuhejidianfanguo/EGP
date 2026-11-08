@@ -1,6 +1,5 @@
 #include <EGP/GLFW.hpp>
 #include <EGP/rhi.hpp>
-
 #include <iostream>
 
 int main() {
