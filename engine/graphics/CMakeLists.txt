@@ -1,5 +1,6 @@
-add_subdirectory(RHI)
-add_subdirectory(Window)
+add_subdirectory(VulkanRenderer)
 
 add_library(EGP_graphics INTERFACE)
-target_link_libraries(EGP_graphics INTERFACE EGP_RHI EGP_window)
+add_library(EGP::graphics ALIAS EGP_graphics)
+
+target_link_libraries(EGP_graphics INTERFACE EGP_RHI)

@@ -1,2 +1,0 @@
-
-#include <EGP/Window.hpp>
