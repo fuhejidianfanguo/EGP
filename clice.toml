@@ -1,0 +1,7 @@
+[[rules]]
+configuration = "debug"
+compile_commands = ["build/clang-debug"]
+
+[[rules]]
+configuration = "release"
+compile_commands = ["build/clang-release"]

@@ -6,6 +6,6 @@ include("cmake/package.cmake")
 include("cmake/collect_source.cmake")
 
 add_subdirectory(core)
-add_subdirectory(graphics)
+add_subdirectory(engine/graphics)
 add_subdirectory(ui)
 add_subdirectory(app)
