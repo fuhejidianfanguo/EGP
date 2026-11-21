@@ -7,11 +7,9 @@ if(EGP_USE_GH_PROXY)
     set(EGP_GITHUB_URL "${EGP_GH_PROXY}${EGP_GITHUB_URL}")
 endif()
 
-# 较小型第三方库
 include(${CMAKE_CURRENT_LIST_DIR}/packages/sfml.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/packages/googletest.cmake)
-FetchContent_MakeAvailable(sfml googletest)
 
-# 需要单独处理的第三方库
+# 大型第三方库
 include(${CMAKE_CURRENT_LIST_DIR}/packages/vulkan.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/packages/opencv.cmake)

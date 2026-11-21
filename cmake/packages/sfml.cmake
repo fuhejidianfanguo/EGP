@@ -4,3 +4,11 @@ FetchContent_Declare(
     GIT_TAG 3.1.0
     GIT_SHALLOW TRUE
 )
+set(SFML_USE_MBEDTLS OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_GRAPHICS OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(sfml)
+
+add_library(EGP_SFML INTERFACE)
+add_library(EGP::SFML ALIAS EGP_SFML)
+target_link_libraries(EGP_SFML INTERFACE SFML::Window SFML::System)

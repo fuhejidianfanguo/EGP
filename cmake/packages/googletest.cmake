@@ -4,3 +4,4 @@ FetchContent_Declare(
     GIT_TAG v1.18.0
     GIT_SHALLOW TRUE
 )
+FetchContent_MakeAvailable(googletest)

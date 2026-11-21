@@ -9,13 +9,12 @@ if(OpenCV_FOUND)
     target_include_directories(EGP_OPENCV INTERFACE ${OpenCV_INCLUDE_DIRS})
 else()
 
-
     include(FetchContent)
 
     FetchContent_Declare(
         opencv
         GIT_REPOSITORY ${EGP_GITHUB_URL}opencv/opencv.git
-        GIT_TAG        5.1.0
+        GIT_TAG 5.1.0
         GIT_SHALLOW TRUE
     )
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -59,10 +58,9 @@ else()
     FetchContent_MakeAvailable(opencv)
 
     # 链接需要的模块
-    target_link_libraries(EGP_OPENCV INTERFACE
-        opencv_core
-        opencv_imgproc
-        opencv_imgcodecs
+    target_link_libraries(
+        EGP_OPENCV
+        INTERFACE opencv_core opencv_imgproc opencv_imgcodecs
     )
 
     target_compile_definitions(EGP_OPENCV INTERFACE EGP_OPENCV_USE_FETCHED)
